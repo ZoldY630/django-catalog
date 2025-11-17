@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>Добавить товар</title>
+    <style>
+        .form-container { max-width: 400px; margin: 50px auto; }
+        .form-control { width: 100%; padding: 10px; margin: 10px 0; }
+        button { background: #4CAF50; color: white; padding: 10px 20px; border: none; }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Добавить новый товар</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.name.label_tag }}
+            {{ form.name }}
+            {{ form.price.label_tag }}
+            {{ form.price }}
+            <button type="submit">Сохранить товар</button>
+        </form>
+        <br>
+        <a href="{% url 'product_list' %}">← Вернуться к списку</a>
+    </div>
+</body>
+</html>

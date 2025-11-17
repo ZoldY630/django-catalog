@@ -1,0 +1,6 @@
+<h1>Удалить товар "{{ object.name }}"?</h1>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Да, удалить</button>
+    <a href="{% url 'product_list' %}">Отмена</a>
+</form>
