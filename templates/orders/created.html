@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Заказ оформлен{% endblock %}
+
+{% block content %}
+<div class="text-center py-5">
+    <div class="display-1 text-success mb-4">✓</div>
+    <h1 class="display-5 fw-bold text-success">Заказ №{{ order.id }} успешно оформлен!</h1>
+    <p class="lead mt-4">Сумма заказа: <strong class="fs-3 text-danger">{{ order.get_total_cost }} ₽</strong></p>
+    <p class="text-muted mt-4">Спасибо за покупку! Мы свяжемся с вами в ближайшее время.</p>
+    <a href="/" class="btn btn-primary btn-lg mt-4">Вернуться на главную</a>
+</div>
+{% endblock %}

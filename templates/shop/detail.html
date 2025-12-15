@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        {% if product.image %}
+        <img src="{{ product.image.url }}" class="img-fluid">
+        {% endif %}
+    </div>
+    <div class="col-md-6">
+        <h1>{{ product.name }}</h1>
+        <p>{{ product.description }}</p>
+        
+        <div class="my-4">
+            {% if product.old_price %}
+            <span class="text-muted text-decoration-line-through fs-4">{{ product.old_price }} ₽</span>
+            {% endif %}
+            <span class="fs-2 fw-bold text-danger">{{ product.price }} ₽</span>
+        </div>
+        
+        <p class="badge bg-success fs-6">
+            {% if product.stock > 0 %}В наличии ({{ product.stock }} шт.){% else %}Нет в наличии{% endif %}
+        </p>
+        
+        <form action="{% url 'cart:cart_add' product.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary btn-lg">В корзину</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

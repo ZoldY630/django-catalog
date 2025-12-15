@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Товары{% endblock %}
+
+{% block content %}
+<h1 class="display-5 fw-bold text-center mb-5 text-primary">Каталог товаров</h1>
+
+<div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+    {% for product in products %}
+    <div class="col">
+        <div class="card h-100 border-0 shadow-sm">
+            {% if product.image %}
+            <img src="{{ product.image.url }}" class="card-img-top" style="height:250px; object-fit:cover;">
+            {% else %}
+            <div class="bg-light d-flex align-items-center justify-content-center" style="height:250px;">
+                <span class="text-muted">Нет фото</span>
+            </div>
+            {% endif %}
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title"><a href="{{ product.get_absolute_url }}" class="text-decoration-none">{{ product.name }}</a></h5>
+                <p class="text-muted small">Остаток: {{ product.stock }} шт.</p>
+                <div class="mt-auto">
+                    {% if product.old_price %}
+                    <div class="price-old">Старая цена: {{ product.old_price }} ₽</div>
+                    {% endif %}
+                    <div class="price-new mb-3">{{ product.price }} ₽</div>
+                    <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary w-100">В корзину</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
