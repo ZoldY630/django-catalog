@@ -1,6 +1,5 @@
 from pathlib import Path
 
-# Это обязательно должно быть в самом начале!
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-tvo-secret-key-mozhet-byt-lyuboy'  # потом поменяешь
@@ -9,7 +8,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
-    'django.contrib.auth',
+    'django.contrib.auth',  # ← уже есть, но убедитесь
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -19,6 +18,7 @@ INSTALLED_APPS = [
     'cart',
     'orders',
     'coupons',
+    'reports',
 ]
 
 MIDDLEWARE = [
@@ -26,7 +26,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',  # ← уже есть
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -42,7 +42,7 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
+                'django.contrib.auth.context_processors.auth',  # ← добавьте для request.user
                 'django.contrib.messages.context_processors.messages',
                 'cart.context_processors.cart',   # ← добавим позже, чтобы корзина была в шапке
             ],
@@ -74,3 +74,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ID сессии для корзины
 CART_SESSION_ID = 'cart'
+
+# Для редиректа после логина/логаута
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = '/accounts/login/'
