@@ -2,6 +2,13 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+STATUS_CHOICES = (
+    ('новый', 'Новый'),
+    ('в обработке', 'В обработке'),
+    ('отменён', 'Отменён'),
+    ('доставлен', 'Доставлен'),
+)
+
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     first_name = models.CharField("Имя", max_length=100)
@@ -12,6 +19,7 @@ class Order(models.Model):
     coupon = models.ForeignKey('coupons.Coupon', null=True, blank=True, on_delete=models.SET_NULL)
     discount = models.IntegerField(default=0)
     paid = models.BooleanField("Оплачен", default=False)
+    status = models.CharField("Статус", max_length=20, choices=STATUS_CHOICES, default='новый')
 
     def __str__(self):
         return f'Заказ {self.id}'
@@ -27,6 +35,8 @@ class OrderItem(models.Model):
     product = models.ForeignKey('shop.Product', on_delete=models.SET_NULL, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     quantity = models.PositiveIntegerField()
+
+
 
     def get_cost(self):
         return self.price * self.quantity
