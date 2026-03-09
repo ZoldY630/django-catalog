@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Статусы заказов{% endblock %}
+
+{% block content %}
+<h1>Статусы заказов</h1>
+<form method="get">
+    <input type="date" name="start" value="{{ start }}">
+    <input type="date" name="end" value="{{ end }}">
+    <button type="submit">Фильтр</button>
+</form>
+<table class="table">
+    <tr><th>Статус</th><th>Количество</th></tr>
+    {% for row in data %}
+    <tr><td>{{ row.status }}</td><td>{{ row.count }}</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

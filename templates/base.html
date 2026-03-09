@@ -4,14 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}Мини-магазин{% endblock %}</title>
-    
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Google Fonts: Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
     <style>
         :root {
             --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -19,37 +17,20 @@
             --text-dark: #2d3436;
             --text-muted: #636e72;
         }
-        
         body {
             font-family: 'Inter', sans-serif;
             background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
             color: var(--text-dark);
             min-height: 100vh;
         }
-        
         .navbar {
             background: var(--primary-gradient) !important;
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
-        
         .navbar-brand {
             font-weight: 700;
             font-size: 1.8rem;
         }
-        
-        .btn-cart {
-            background: #fff;
-            color: #667eea;
-            font-weight: 600;
-            border: none;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-cart:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        }
-        
         .card {
             border: none;
             border-radius: 16px;
@@ -57,40 +38,18 @@
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
         }
-        
         .card:hover {
             transform: translateY(-12px);
             box-shadow: 0 20px 40px rgba(0,0,0,0.15);
         }
-        
         .card-img-top {
             height: 280px;
             object-fit: cover;
             transition: transform 0.5s ease;
         }
-        
         .card:hover .card-img-top {
             transform: scale(1.08);
         }
-        
-        .price-old {
-            color: #95a5a6;
-            text-decoration: line-through;
-            font-size: 1rem;
-        }
-        
-        .price-new {
-            color: var(--accent-color);
-            font-size: 2rem;
-            font-weight: 700;
-        }
-        
-        .badge-stock {
-            font-size: 1rem;
-            padding: 0.6em 1.2em;
-            border-radius: 50px;
-        }
-        
         .btn-primary {
             background: var(--primary-gradient);
             border: none;
@@ -99,12 +58,10 @@
             font-weight: 600;
             transition: all 0.3s ease;
         }
-        
         .btn-primary:hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 25px rgba(102,126,234,0.4);
         }
-        
         footer {
             background: #2d3436;
             color: #b2bec3;
@@ -113,17 +70,83 @@
     </style>
 </head>
 <body class="d-flex flex-column min-vh-100">
+
     <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
         <div class="container">
             <a class="navbar-brand" href="/">🛍️ Мини-магазин</a>
-            <a href="{% url 'cart:cart_detail' %}" class="btn btn-cart position-relative">
-                <i class="bi bi-cart3 fs-4"></i> Корзина
-                {% if cart|length > 0 %}
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    {{ cart|length }}
-                </span>
-                {% endif %}
-            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+                    data-bs-target="#navbarNav" aria-controls="navbarNav" 
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+
+                    {% if request.user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" 
+                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ request.user.first_name|default:request.user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li>
+                                <a class="dropdown-item" href="{% url 'orders:my_orders' %}">
+                                    Мои заказы
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="{% url 'logout' %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item text-start w-100">
+                                        Выход
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+
+                    {% if request.user.is_staff %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="reportsDropdown" 
+                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Отчёты
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="reportsDropdown">
+                            <li><a class="dropdown-item" href="{% url 'reports:sales_by_period' %}">Продажи по периодам</a></li>
+                            <li><a class="dropdown-item" href="{% url 'reports:order_statuses' %}">Статусы заказов</a></li>
+                            <li><a class="dropdown-item" href="{% url 'reports:stock_remains' %}">Остатки на складе</a></li>
+                            <li><a class="dropdown-item" href="{% url 'reports:new_clients' %}">Новые клиенты</a></li>
+                            <li><a class="dropdown-item" href="{% url 'reports:best_clients' %}">Лучшие клиенты</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Вход</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'shop:register' %}">Регистрация</a>
+                    </li>
+                    {% endif %}
+
+                    <!-- Корзина всегда последней -->
+                    <li class="nav-item">
+                        <a href="{% url 'cart:cart_detail' %}" class="nav-link position-relative">
+                            <i class="bi bi-cart3 fs-4"></i> Корзина
+                            {% if cart|length > 0 %}
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                {{ cart|length }}
+                            </span>
+                            {% endif %}
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
         </div>
     </nav>
 

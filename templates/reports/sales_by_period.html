@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Продажи по периодам{% endblock %}
+
+{% block content %}
+<h1>Продажи по {% if period == 'day' %}дням{% else %}месяцам{% endif %}</h1>
+<form method="get">
+    <input type="date" name="start" value="{{ start }}">
+    <input type="date" name="end" value="{{ end }}">
+    <select name="period">
+        <option value="day" {% if period == 'day' %}selected{% endif %}>По дням</option>
+        <option value="month" {% if period == 'month' %}selected{% endif %}>По месяцам</option>
+    </select>
+    <button type="submit">Фильтр</button>
+</form>
+<table class="table">
+    <tr><th>Дата</th><th>Заказов</th><th>Выручка</th><th>Средний чек</th><th>Оплачено</th><th>Отменено</th></tr>
+    {% for row in data %}
+    <tr><td>{{ row.date|date:"d.m.Y" }}</td><td>{{ row.count }}</td><td>{{ row.revenue }}</td><td>{{ row.avg_check|floatformat:2 }}</td><td>{{ row.paid }}</td><td>{{ row.cancelled }}</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

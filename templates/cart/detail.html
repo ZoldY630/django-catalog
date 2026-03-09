@@ -39,7 +39,7 @@
     <button type="submit" class="btn btn-success">Применить</button>
 </form>
 
-<a href="{% url 'order_create' %}" class="btn btn-primary btn-lg">Оформить заказ</a>
+<a href="{% url 'orders:order_create' %}" class="btn btn-primary btn-lg">Оформить заказ</a>
 {% else %}
 <p>Корзина пуста</p>
 {% endif %}

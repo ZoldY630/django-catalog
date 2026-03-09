@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Лучшие клиенты{% endblock %}
+
+{% block content %}
+<h1>Лучшие клиенты</h1>
+<table class="table">
+    <tr><th>Клиент</th><th>Сумма заказов</th><th>Количество покупок</th></tr>
+    {% for row in data %}
+    <tr><td>{{ row.user__username }}</td><td>{{ row.total_sum }}</td><td>{{ row.count }}</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

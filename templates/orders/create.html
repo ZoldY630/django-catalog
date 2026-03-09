@@ -9,8 +9,8 @@
             <div class="card-body p-5">
                 <form method="post">
                     {% csrf_token %}
-                    <div class="mb-4"><input name="first_name" placeholder="Имя" class="form-control form-control-lg" required></div>
-                    <div class="mb-4"><input name="phone" placeholder="Телефон" class="form-control form-control-lg" required></div>
+                    <div class="mb-4"><input name="first_name" placeholder="Имя" class="form-control form-control-lg" value="{{ initial_data.first_name }}" required></div>
+                    <div class="mb-4"><input name="phone" placeholder="Телефон" class="form-control form-control-lg" value="{{ initial_data.phone }}" required></div>
                     <div class="mb-4"><textarea name="address" placeholder="Адрес доставки" class="form-control form-control-lg" rows="4" required></textarea></div>
                     <div class="mb-4"><textarea name="comment" placeholder="Комментарий (необязательно)" class="form-control form-control-lg" rows="3"></textarea></div>
                     <div class="text-center">

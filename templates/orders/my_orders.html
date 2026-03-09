@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Мои заказы{% endblock %}
+
+{% block content %}
+<h1 class="display-6 text-center mb-5">Мои заказы</h1>
+{% if orders %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Номер</th>
+            <th>Дата</th>
+            <th>Сумма</th>
+            <th>Статус</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.created|date:"d.m.Y H:i" }}</td>
+            <td>{{ order.get_total_cost }} ₽</td>
+            <td>{% if order.paid %}Оплачен{% else %}Не оплачен{% endif %}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="text-center">У вас нет заказов.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Остатки на складе{% endblock %}
+
+{% block content %}
+<h1>Остатки на складе</h1>
+<table class="table">
+    <tr><th>Товар</th><th>Остаток</th><th>Малый?</th></tr>
+    {% for product in products %}
+    <tr><td>{{ product.name }}</td><td>{{ product.stock }}</td><td>{% if product.low_stock %}Да{% endif %}</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}
